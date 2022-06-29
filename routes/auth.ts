@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { loginUser, registerUser, renewToken } from "../controllers/auth";
-import { validateFields } from "../middlewares";
+import { validateFields, validateJWT } from "../middlewares";
 
 const router = Router();
 
@@ -25,11 +25,11 @@ router.post(
 		check("password", "The password must have at least 5 characters").isLength({
 			min: 5,
 		}),
-		validateFields
+		validateFields,
 	],
 	registerUser
 );
 
-router.get("/renew", renewToken);
+router.get("/renew", validateJWT, renewToken);
 
 export default router;

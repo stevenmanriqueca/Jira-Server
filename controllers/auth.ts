@@ -3,8 +3,12 @@ import { IUser } from "../models";
 import { db } from "../database";
 import bcrypt from "bcryptjs";
 import User from "../models/User";
+import { generateJWT } from "../helpers/jwt";
 
-type Data = { message: string } | { _id: string; name: string } | IUser;
+type Data =
+	| { message: string }
+	| { _id: string; name: string; token: string }
+	| IUser;
 
 const loginUser = async (req: Request, res: Response<Data>) => {
 	const { email, password } = req.body;
@@ -26,9 +30,13 @@ const loginUser = async (req: Request, res: Response<Data>) => {
 				message: "Password Incorrect",
 			});
 		}
+
+		//Generate token
+		const token = await generateJWT(user.id, user.name);
 		res.json({
 			_id: user.id,
 			name: user.name,
+			token,
 		});
 	} catch (err) {
 		res.status(500).json({
@@ -59,8 +67,14 @@ const registerUser = async (req: Request, res: Response) => {
 
 		await db.disconnect();
 
+		const token = await generateJWT(newUser.id, newUser.name);
+
 		return res.status(201).json({
-			newUser,
+			_id: newUser.id,
+			name: newUser.name,
+			email: newUser.email,
+			columnsJira: newUser.columnsJira,
+			token,
 		});
 	} catch (err) {
 		console.log(err);
@@ -70,9 +84,13 @@ const registerUser = async (req: Request, res: Response) => {
 	}
 };
 
-const renewToken = (req: Request, res: Response<Data>) => {
+const renewToken = async (req: Request, res: Response<Data>) => {
+	const { id, name } = req;
+	const token = await generateJWT(id, name);
+
 	res.json({
-		message: "Renew Token",
+		message: "renew",
+		token,
 	});
 };
 
