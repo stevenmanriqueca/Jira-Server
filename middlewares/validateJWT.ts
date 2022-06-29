@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 //interface to know the properties of the token payload
 interface JwtPayload {
-	_id: string;
+	id: string;
 	name: string;
 }
 
@@ -29,13 +29,13 @@ export const validateJWT = (
 	}
 
 	try {
-		const { _id, name } = jwt.verify(
+		const { id, name } = jwt.verify(
 			token,
 			process.env.SECRET_KEY!
 		) as JwtPayload;
 
 		//Add custom property to request
-		req.id = _id;
+		req.id = id;
 		req.name = name;
 	} catch (err) {
 		return res.status(401).json({

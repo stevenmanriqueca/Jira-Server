@@ -5,8 +5,11 @@ import {
 	newEntry,
 	updateEntry,
 } from "../controllers/entries";
+import {validateJWT} from "../middlewares";
 
 const router = Router();
+
+router.use(validateJWT)
 
 router.get("/", getEntries);
 router.post("/", newEntry);

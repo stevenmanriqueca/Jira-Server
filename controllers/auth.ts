@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import { IUser } from "../models";
 import { db } from "../database";
 import bcrypt from "bcryptjs";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { generateJWT } from "../helpers/jwt";
 
 type Data =
 	| { message: string }
-	| { _id: string; name: string; token: string }
+	| { id: string; name: string; token: string }
 	| IUser;
 
 const loginUser = async (req: Request, res: Response<Data>) => {
@@ -34,7 +33,7 @@ const loginUser = async (req: Request, res: Response<Data>) => {
 		//Generate token
 		const token = await generateJWT(user.id, user.name);
 		res.json({
-			_id: user.id,
+			id: user.id,
 			name: user.name,
 			token,
 		});
@@ -70,7 +69,7 @@ const registerUser = async (req: Request, res: Response) => {
 		const token = await generateJWT(newUser.id, newUser.name);
 
 		return res.status(201).json({
-			_id: newUser.id,
+			id: newUser.id,
 			name: newUser.name,
 			email: newUser.email,
 			columnsJira: newUser.columnsJira,
