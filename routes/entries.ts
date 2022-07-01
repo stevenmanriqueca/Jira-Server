@@ -13,7 +13,7 @@ router.use(validateJWT)
 
 router.get("/", getEntries);
 router.post("/", newEntry);
-router.put("/:id", updateEntry);
-router.delete("/:id", deleteEntry);
+router.put("/:idEntry", updateEntry);
+router.delete("/:idEntry", deleteEntry);
 
 export default router;

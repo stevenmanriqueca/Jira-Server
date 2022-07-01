@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { loginUser, registerUser, renewToken } from "../controllers/auth";
+import { addColumn, deleteColumnJira, loginUser, registerUser, renewToken } from "../controllers/user";
 import { validateFields, validateJWT } from "../middlewares";
 
 const router = Router();
@@ -30,6 +30,11 @@ router.post(
 	registerUser
 );
 
-router.get("/renew", validateJWT, renewToken);
+router.use(validateJWT)
+router.get("/renew", renewToken);
+
+//Add and delete Columns Jira
+router.post("/deleteColumn/:id", deleteColumnJira);
+router.post("/addColumn/:id", addColumn);
 
 export default router;

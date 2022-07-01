@@ -15,12 +15,12 @@ const loginUser = async (req: Request, res: Response<Data>) => {
 	try {
 		await db.connect();
 		const user = await User.findOne({ email });
+		await db.disconnect();
 		if (!user) {
 			return res.status(400).json({
 				message: "There is no user with that email",
 			});
 		}
-		await db.disconnect();
 
 		//Confirm passwords
 		const validPassword = bcrypt.compareSync(password, user.password);
@@ -32,13 +32,13 @@ const loginUser = async (req: Request, res: Response<Data>) => {
 
 		//Generate token
 		const token = await generateJWT(user.id, user.name);
-		res.json({
+		return res.json({
 			id: user.id,
 			name: user.name,
 			token,
 		});
 	} catch (err) {
-		res.status(500).json({
+		return res.status(500).json({
 			message: "Please contact the administrator",
 		});
 	}
@@ -77,7 +77,7 @@ const registerUser = async (req: Request, res: Response) => {
 		});
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({
+		return res.status(500).json({
 			message: "Please contact the administrator",
 		});
 	}
@@ -87,10 +87,66 @@ const renewToken = async (req: Request, res: Response<Data>) => {
 	const { id, name } = req;
 	const token = await generateJWT(id, name);
 
-	res.json({
+	return res.json({
 		message: "renew",
 		token,
 	});
 };
 
-export { loginUser, registerUser, renewToken };
+const deleteColumnJira = async (req: Request, res: Response) => {
+	const { nameColumn } = req.body;
+	const idUser = req.params.id;
+	try {
+		await db.connect();
+		const user: IUser | null = await User.findById(idUser);
+		if (user) {
+			const updateColumnsUser = user.columnsJira.filter(
+				(columns) => columns !== nameColumn
+			);
+			(user.columnsJira = updateColumnsUser),
+				await User.findByIdAndUpdate(idUser, user, { new: true });
+			return res.status(201).json({
+				message: "Update Columns User",
+			});
+		}
+
+		await db.disconnect();
+		return res.status(400).json({
+			message: "Not user found",
+		});
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({
+			message: "Please contact the administrator",
+		});
+	}
+};
+
+const addColumn = async (req: Request, res: Response) => {
+	const { newColumns } = req.body;
+	const idUser = req.params.id;
+
+	try {
+		await db.connect();
+		const user: IUser | null = await User.findById(idUser);
+		if (user) {
+			user.columnsJira = user.columnsJira.concat(newColumns);
+			await User.findByIdAndUpdate(idUser, user, { new: true });
+			return res.status(201).json({
+				message: "Add Columns",
+				user,
+			});
+		}
+		await db.disconnect();
+		return res.status(400).json({
+			message: "Not user found",
+		});
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({
+			message: "Please contact the administrator",
+		});
+	}
+};
+
+export { loginUser, registerUser, renewToken, deleteColumnJira, addColumn };
