@@ -1,3 +1,3 @@
 # Jira Backend
 
-For uses application you shold create file .env guide for the .env.template example and uses your connection and secret key
+To use the application, you need to create the .env file, follow the example .env.template and use your connection and secret key.
