@@ -1,13 +1,18 @@
 import { Request, Response } from "express";
 import { db } from "../database";
 import bcrypt from "bcryptjs";
-import User, { IUser } from "../models/User";
+import { User, IUser } from "../models";
 import { generateJWT } from "../helpers/jwt";
+
+interface IUserWithToken extends IUser {
+	token: string;
+}
 
 type Data =
 	| { message: string }
 	| { id: string; name: string; token: string }
-	| IUser;
+	| IUser
+	| IUserWithToken;
 
 const loginUser = async (req: Request, res: Response<Data>) => {
 	const { email, password } = req.body;
@@ -44,7 +49,7 @@ const loginUser = async (req: Request, res: Response<Data>) => {
 	}
 };
 
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response<Data>) => {
 	const { email, password } = req.body;
 
 	try {
@@ -93,7 +98,7 @@ const renewToken = async (req: Request, res: Response<Data>) => {
 	});
 };
 
-const deleteColumnJira = async (req: Request, res: Response) => {
+const deleteColumnJira = async (req: Request, res: Response<Data>) => {
 	const { nameColumn } = req.body;
 	const idUser = req.params.id;
 	try {
@@ -122,7 +127,7 @@ const deleteColumnJira = async (req: Request, res: Response) => {
 	}
 };
 
-const addColumn = async (req: Request, res: Response) => {
+const addColumn = async (req: Request, res: Response<Data>) => {
 	const { newColumns } = req.body;
 	const idUser = req.params.id;
 
@@ -133,8 +138,7 @@ const addColumn = async (req: Request, res: Response) => {
 			user.columnsJira = user.columnsJira.concat(newColumns);
 			await User.findByIdAndUpdate(idUser, user, { new: true });
 			return res.status(201).json({
-				message: "Add Columns",
-				user,
+				message: "Added Columns",
 			});
 		}
 		await db.disconnect();

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../database";
-import Entry, { IEntry } from "../models/Entry";
+import { Entry, IEntry } from "../models";
 
 type Data = IEntry | IEntry[] | { message: string };
 
@@ -33,12 +33,12 @@ const newEntry = async (req: Request, res: Response<Data>) => {
 };
 
 const updateEntry = async (req: Request, res: Response<Data>) => {
-	const entryId = req.params.idEntry;
+	const { idEntry } = req.params;
 	const idUser = req.id;
 
 	try {
 		await db.connect();
-		const entryDB: Record<string, any> | null = await Entry.findById(entryId);
+		const entryDB: Record<string, any> | null = await Entry.findById(idEntry);
 		await db.disconnect();
 		if (!entryDB) {
 			return res.status(404).json({
@@ -57,7 +57,7 @@ const updateEntry = async (req: Request, res: Response<Data>) => {
 		};
 
 		await db.connect();
-		const entryUpdated = await Entry.findByIdAndUpdate(entryId, updatedEntry, {
+		const entryUpdated = await Entry.findByIdAndUpdate(idEntry, updatedEntry, {
 			new: true,
 		});
 		await db.disconnect();
@@ -72,13 +72,13 @@ const updateEntry = async (req: Request, res: Response<Data>) => {
 };
 
 const deleteEntry = async (req: Request, res: Response<Data>) => {
-	const idEntry = req.params.idEntry;
+	const { idEntry } = req.params;
 	const idUser = req.id;
 
 	try {
-		await db.connect()
+		await db.connect();
 		const entryInDb: Record<string, any> | null = await Entry.findById(idEntry);
-		await db.disconnect()
+		await db.disconnect();
 		if (!entryInDb) {
 			return res.status(404).json({
 				message: "Entry not found",
@@ -91,9 +91,9 @@ const deleteEntry = async (req: Request, res: Response<Data>) => {
 			});
 		}
 
-		await db.connect()
+		await db.connect();
 		await Entry.findByIdAndDelete(idEntry);
-		await db.disconnect()
+		await db.disconnect();
 
 		res.status(200).json({ message: "Entry deleted" });
 	} catch (error) {

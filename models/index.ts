@@ -1,2 +1,3 @@
-export { default as UserModel, type IUser } from "./User";
-export { default as EntryModel, type IEntry } from "./Entry";
+export { default as User, type IUser } from "./User";
+export { default as Entry, type IEntry } from "./Entry";
+export { default as Note, type INote } from "./Note";

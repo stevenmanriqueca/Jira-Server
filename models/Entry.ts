@@ -3,6 +3,7 @@ import mongoose, { Model, Schema } from "mongoose";
 export interface IEntry {
 	id: string;
 	title: string;
+	description: string;
 	priority: string;
 	userTags: IUserTags[];
 	createdAt: number;
@@ -20,7 +21,7 @@ const entrySchema = new Schema({
 	priority: { type: String, required: true },
 	userTags: [tagsSchema],
 	createdAt: { type: Number },
-	colorEntry: { type: String, required: false },
+	colorEntry: { type: String, required: true },
 	status: { type: String, required: true },
 	user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

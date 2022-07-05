@@ -5,8 +5,11 @@ import {
 	newNote,
 	updateNote,
 } from "../controllers/notes";
+import { validateJWT } from "../middlewares";
 
 const router = Router();
+
+router.use(validateJWT);
 
 router.get("/", getNotes);
 router.post("/", newNote);
