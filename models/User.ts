@@ -9,9 +9,9 @@ export interface IUser {
 }
 
 const userSchema = new Schema({
-	name: { type: String, requiered: true },
-	email: { type: String, requiered: true, unique: true },
-	password: { type: String, requiered: true },
+	name: { type: String, required: true },
+	email: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
 	columnsJira: { type: [String], default: ["Todo", "In - Progress", "Done"] },
 });
 
