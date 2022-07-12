@@ -10,7 +10,7 @@ interface IUserWithToken extends IUser {
 
 type Data =
 	| { message: string }
-	| { id: string; name: string; token: string }
+	| { id: string; name: string; token: string; columnsJira: string[] }
 	| IUser
 	| IUserWithToken;
 
@@ -40,6 +40,7 @@ const loginUser = async (req: Request, res: Response<Data>) => {
 		return res.json({
 			id: user.id,
 			name: user.name,
+			columnsJira: user.columnsJira,
 			token,
 		});
 	} catch (err) {

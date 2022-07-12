@@ -40,6 +40,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.json({
             id: user.id,
             name: user.name,
+            columnsJira: user.columnsJira,
             token,
         });
     }
