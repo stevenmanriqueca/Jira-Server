@@ -1,11 +1,13 @@
 import express, { Application } from "express";
+import cors from "cors"
 import userRoutes from "./routes/user";
 import entriesRoutes from "./routes/entries";
 import notesRouter from "./routes/notes";
 import "dotenv/config";
 
 const app: Application = express();
-
+//Cors
+app.use(cors())
 //Read and parse the body
 app.use(express.json());
 

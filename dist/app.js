@@ -4,11 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const user_1 = __importDefault(require("./routes/user"));
 const entries_1 = __importDefault(require("./routes/entries"));
 const notes_1 = __importDefault(require("./routes/notes"));
 require("dotenv/config");
 const app = (0, express_1.default)();
+//Cors
+app.use((0, cors_1.default)());
 //Read and parse the body
 app.use(express_1.default.json());
 app.use("/jira/user", user_1.default);
