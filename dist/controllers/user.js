@@ -86,9 +86,19 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.registerUser = registerUser;
 const renewToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, name } = req;
+    yield database_1.db.connect();
+    const user = yield models_1.User.findById(id);
+    yield database_1.db.disconnect();
     const token = yield (0, jwt_1.generateJWT)(id, name);
+    if (!user || !token) {
+        return res.status(400).json({
+            message: "Error renewToken"
+        });
+    }
     return res.json({
-        message: "renew",
+        id: user.id,
+        name: user.name,
+        columnsJira: user.columnsJira,
         token,
     });
 });

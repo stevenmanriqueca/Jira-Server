@@ -90,11 +90,24 @@ const registerUser = async (req: Request, res: Response<Data>) => {
 };
 
 const renewToken = async (req: Request, res: Response<Data>) => {
+
 	const { id, name } = req;
+
+	await db.connect()
+	const user = await User.findById(id)
+	await db.disconnect()
 	const token = await generateJWT(id, name);
 
+	if (!user || !token) {
+		return res.status(400).json({
+			message: "Error renewToken"
+		})
+	}
+
 	return res.json({
-		message: "renew",
+		id: user.id,
+		name: user.name,
+		columnsJira: user.columnsJira,
 		token,
 	});
 };
