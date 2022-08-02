@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../database";
 import bcrypt from "bcryptjs";
-import { User, IUser } from "../models";
+import { User, IUser, Entry } from "../models";
 import { generateJWT } from "../helpers/jwt";
 
 interface IUserWithToken extends IUser {
@@ -122,8 +122,9 @@ const deleteColumnJira = async (req: Request, res: Response<Data>) => {
 			const updateColumnsUser = user.columnsJira.filter(
 				(columns) => columns !== nameColumn
 			);
-			(user.columnsJira = updateColumnsUser),
-				await User.findByIdAndUpdate(idUser, user, { new: true });
+			user.columnsJira = updateColumnsUser
+			await Entry.deleteMany({ "status": `${nameColumn}` })
+			await User.findByIdAndUpdate(idUser, user, { new: true });
 			return res.status(201).json({
 				message: "Update Columns User",
 			});
