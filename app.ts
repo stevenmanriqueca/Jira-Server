@@ -6,8 +6,10 @@ import notesRouter from "./routes/notes";
 import "dotenv/config";
 
 const app: Application = express();
+
+const whiteList = ["http://localhost:5173"]
 //Cors
-app.use(cors())
+app.use(cors({ origin: whiteList }))
 //Read and parse the body
 app.use(express.json());
 
