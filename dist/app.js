@@ -10,8 +10,9 @@ const entries_1 = __importDefault(require("./routes/entries"));
 const notes_1 = __importDefault(require("./routes/notes"));
 require("dotenv/config");
 const app = (0, express_1.default)();
+const whiteList = ["http://localhost:5173"];
 //Cors
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: whiteList }));
 //Read and parse the body
 app.use(express_1.default.json());
 app.use("/jira/user", user_1.default);
