@@ -111,8 +111,9 @@ const deleteColumnJira = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const user = yield models_1.User.findById(idUser);
         if (user) {
             const updateColumnsUser = user.columnsJira.filter((columns) => columns !== nameColumn);
-            (user.columnsJira = updateColumnsUser),
-                yield models_1.User.findByIdAndUpdate(idUser, user, { new: true });
+            user.columnsJira = updateColumnsUser;
+            yield models_1.Entry.deleteMany({ "status": `${nameColumn}` });
+            yield models_1.User.findByIdAndUpdate(idUser, user, { new: true });
             return res.status(201).json({
                 message: "Update Columns User",
             });
