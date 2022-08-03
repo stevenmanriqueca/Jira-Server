@@ -7,7 +7,7 @@ export interface IEntry {
 	priority: string;
 	userTags: IUserTags[];
 	createdAt: number;
-	colorEntry: string;
+	position?: number;
 	status: string;
 }
 interface IUserTags {
@@ -21,7 +21,7 @@ const entrySchema = new Schema({
 	priority: { type: String, required: true },
 	userTags: [tagsSchema],
 	createdAt: { type: Number },
-	colorEntry: { type: String, required: true },
+	colorEntry: { type: Number },
 	status: { type: String, required: true },
 	user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

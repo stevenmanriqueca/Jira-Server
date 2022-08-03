@@ -31,7 +31,7 @@ const entrySchema = new mongoose_1.Schema({
     priority: { type: String, required: true },
     userTags: [tagsSchema],
     createdAt: { type: Number },
-    colorEntry: { type: String, required: true },
+    colorEntry: { type: Number },
     status: { type: String, required: true },
     user: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" },
 });
