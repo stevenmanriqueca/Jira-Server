@@ -2,7 +2,6 @@ import express, { Application } from "express";
 import cors from "cors"
 import userRoutes from "./routes/user";
 import entriesRoutes from "./routes/entries";
-import notesRouter from "./routes/notes";
 import "dotenv/config";
 
 const app: Application = express();
@@ -15,7 +14,6 @@ app.use(express.json());
 
 app.use("/jira/user", userRoutes);
 app.use("/jira/entries", entriesRoutes);
-app.use("/jira/notes", notesRouter);
 
 //Listen request
 app.listen(process.env.PORT, () => {

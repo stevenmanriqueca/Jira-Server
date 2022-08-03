@@ -7,7 +7,6 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = __importDefault(require("./routes/user"));
 const entries_1 = __importDefault(require("./routes/entries"));
-const notes_1 = __importDefault(require("./routes/notes"));
 require("dotenv/config");
 const app = (0, express_1.default)();
 const whiteList = ["http://localhost:5173"];
@@ -17,7 +16,6 @@ app.use((0, cors_1.default)({ origin: whiteList }));
 app.use(express_1.default.json());
 app.use("/jira/user", user_1.default);
 app.use("/jira/entries", entries_1.default);
-app.use("/jira/notes", notes_1.default);
 //Listen request
 app.listen(process.env.PORT, () => {
     console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
