@@ -19,7 +19,6 @@ router.post(
 		check("title", "Title is required").not().isEmpty(),
 		check("description", "Description is required").not().isEmpty(),
 		check("priority", "Priority is required").not().isEmpty(),
-		check("colorEntry", "ColorEntry is required").not().isEmpty(),
 		check("status", "status is required").not().isEmpty(),
 	],
 	newEntry
@@ -30,7 +29,6 @@ router.put(
 		check("title", "Title is required").not().isEmpty(),
 		check("description", "Description is required").not().isEmpty(),
 		check("priority", "Priority is required").not().isEmpty(),
-		check("colorEntry", "ColorEntry is required").not().isEmpty(),
 		check("status", "status is required").not().isEmpty(),
 	],
 	updateEntry
