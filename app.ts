@@ -6,7 +6,7 @@ import "dotenv/config";
 
 const app: Application = express();
 
-const whiteList = ["http://localhost:5173"]
+const whiteList = ["https://jira-app-st.vercel.app"]
 //Cors
 app.use(cors({ origin: whiteList }))
 //Read and parse the body

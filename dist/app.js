@@ -9,7 +9,7 @@ const user_1 = __importDefault(require("./routes/user"));
 const entries_1 = __importDefault(require("./routes/entries"));
 require("dotenv/config");
 const app = (0, express_1.default)();
-const whiteList = ["http://localhost:5173"];
+const whiteList = ["https://jira-app-st.vercel.app"];
 //Cors
 app.use((0, cors_1.default)({ origin: whiteList }));
 //Read and parse the body
